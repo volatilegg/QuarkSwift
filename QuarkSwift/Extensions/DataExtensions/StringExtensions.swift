@@ -36,4 +36,9 @@ extension String {
         let start = self.characters.index(self.startIndex, offsetBy: startIndex + length)
         return self[start..<self.endIndex]
     }
+    
+    /// Return a coordinate string with format "lat,lon"
+    static func coordinateToString(_ lat: Double, lon: Double) -> String {
+        return "\(lat),\(lon)"
+    }
 }

@@ -42,6 +42,72 @@ extension UIView {
             self.alpha = 0.0
             }, completion: completion)
     }
+    
+    /// Spinning animation with speed define by time to spin 1 round
+    public func spin(_ timePerRound: TimeInterval) {
+        let rotationAnimation: CABasicAnimation
+        rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.toValue = M_PI * 2.0
+        rotationAnimation.duration = timePerRound
+        rotationAnimation.isCumulative = true
+        rotationAnimation.repeatCount = Float.infinity
+        
+        self.layer.add(rotationAnimation, forKey: "rotationAnimation")
+    }
+    
+    /// Drawing circle with custom color
+    public func drawCircle(_ fillColor: UIColor) {
+        let circle = UIView(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
+        circle.cornerRadius = circle.width / 2
+        circle.clipsToBounds = true
+        circle.backgroundColor = fillColor
+        circle.center = self.center
+        
+        self.addSubview(circle)
+    }
+    
+    /// Flipping view
+    public func flip(_ frontView: UIView, backView: UIView, isFrontView: Bool) {
+        UIView.transition(with: self,
+                          duration: 0.5,
+                          options: UIViewAnimationOptions.transitionFlipFromLeft,
+                          animations: { () -> Void in
+                            frontView.isHidden = isFrontView
+                            backView.isHidden = !isFrontView
+                            
+        }, completion: nil)
+    }
+    
+    /// Rotating view with radian
+    public func rotate(radians: CGFloat, animated: Bool = false) {
+        if animated {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.transform = CGAffineTransform(rotationAngle: radians)
+            })
+        } else {
+            transform = CGAffineTransform(rotationAngle: radians)
+        }
+    }
+    
+    /// Rotating view with degrees
+    public func rotate(degrees: CGFloat, animated: Bool = false) {
+        if animated {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.transform = CGAffineTransform(rotationAngle: degrees.toRadians())
+            })
+        } else {
+            transform = CGAffineTransform(rotationAngle: degrees.toRadians())
+        }
+    }
+    
+    /// Customize corners with positions and radius
+    public func cornerRadius(_ corners: UIRectCorner, radius: CGSize) {
+        let maskPath: UIBezierPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: radius)
+        let maskLayer: CAShapeLayer = CAShapeLayer()
+        maskLayer.frame = self.bounds
+        maskLayer.path  = maskPath.cgPath
+        self.layer.mask = maskLayer
+    }
 }
 
 // MARK: Frame extensions

@@ -9,11 +9,11 @@
 import UIKit
 
 extension Bundle {
-    public var appVersion: String? {
+    static var appVersion: String? {
         return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
 
-    public var appBuild: String? {
-        return self.infoDictionary?["CFBundleVersion"] as? String
+    static var appBuild: String? {
+        return Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     }
 }
